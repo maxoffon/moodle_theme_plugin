@@ -47,8 +47,7 @@ class theme_max_core_course_renderer extends core_course_renderer {
 
                 case FRONTPAGEALLCOURSELIST:
                     $availablecourseslist = $this->get_html($CFG); //Custom design function: return customized list of courses
-                    $output .= $this->frontpage_part('skipavailablecourses', 'frontpage-available-course-list',
-                        get_string('availablecourses'), $availablecourseslist);
+                    $output .= $availablecourseslist;
                     break;
 
                 case FRONTPAGECATEGORYNAMES:
@@ -72,6 +71,44 @@ class theme_max_core_course_renderer extends core_course_renderer {
         return $output;
     }
 
+    protected function course_contacts_with_div(core_course_list_element $course) {
+        $content = '';
+        if ($course->has_course_contacts()) {
+            $content .= html_writer::start_tag('ul', ['class' => 'teachers']);
+            foreach ($course->get_course_contacts() as $coursecontact) {
+                $rolenames = array_map(function ($role) {
+                    return $role->displayname;
+                }, $coursecontact['roles']);
+                $name = html_writer::tag('div', implode(", ", $rolenames).': ', ['class' => 'font-weight-bold']);
+                $name .= html_writer::link(new moodle_url('/user/view.php',
+                    ['id' => $coursecontact['user']->id, 'course' => SITEID]),
+                    $coursecontact['username']);
+                $content .= html_writer::tag('li', $name);
+            }
+            $content .= html_writer::end_tag('ul');
+        }
+        return $content;
+    }
+
+    protected function coursecat_coursebox_content_with_div(coursecat_helper $chelper, $course) {
+        if ($chelper->get_show_courses() < self::COURSECAT_SHOW_COURSES_EXPANDED) {
+            return '';
+        }
+        if ($course instanceof stdClass) {
+            $course = new core_course_list_element($course);
+        }
+        $content = \html_writer::start_tag('div', ['class' => 'd-flex']);
+        $content .= $this->course_overview_files($course);
+        $content .= \html_writer::start_tag('div', ['class' => 'flex-grow-1']);
+        $content .= $this->course_summary($chelper, $course);
+        $content .= $this->course_contacts_with_div($course);
+        $content .= $this->course_category_name($chelper, $course);
+        $content .= $this->course_custom_fields($course);
+        $content .= \html_writer::end_tag('div');
+        $content .= \html_writer::end_tag('div');
+        return $content;
+    }
+
     public function get_html($CFG)
     {
         $chelper = new coursecat_helper();
@@ -89,17 +126,26 @@ class theme_max_core_course_renderer extends core_course_renderer {
 
         //#0A4259
 
+        $text .= html_writer::tag('h2', 'Все курсы', ['class' => 'all-courses']);
+
+        $text .= html_writer::start_tag('div', ['class' => 'mine-wrapper']);
+
         foreach ($courses as $course) {
             $text .= html_writer::start_tag('div', ['class' => 'mine']);
 
             $coursename = $this->course_name($chelper, $course).$this->course_enrolment_icons($course);
             $text .= html_writer::tag('div', $coursename, array('class' => 'info'));
 
-            $contacts = $this->coursecat_coursebox_content($chelper, $course);
+            $contacts = $this->coursecat_coursebox_content_with_div($chelper, $course);
+
             $text .= html_writer::tag('div', $contacts, array('class' => 'content'));
 
             $text .= html_writer::end_tag('div');
         }
+
+        $text .= html_writer::end_tag('div');
+
         return $text;
     }
+
 }
