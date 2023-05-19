@@ -38,4 +38,4 @@ $THEME->scss = function($theme) {
     return theme_max_get_main_scss_content($theme);
 };
 $THEME->usefallback = true;
-$THEME->haseditswitch = false;
+$THEME->haseditswitch = true;

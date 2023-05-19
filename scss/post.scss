@@ -116,3 +116,27 @@ body.limitedwidth #page.drawers .main-inner {
 #page.drawers div[role="main"] {
   padding: 22px 61px 15px 47px;
 }
+
+.nav-item {
+  position: relative;
+}
+
+.navbar-nav .popover-region .icon {
+  color: white;
+}
+
+.nav-item[data-key="home"]::before {
+  content: "";
+  position: absolute;
+  background-image: url("../pix/house (1) 1.svg");
+  width: 25px;
+  height: 25px;
+}
+
+.navbar-nav .nav-link {
+  padding-left: 50px;
+}
+
+.input-group label, .text-primary {
+  color: white!important;
+}
