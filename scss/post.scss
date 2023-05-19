@@ -2,7 +2,8 @@
   padding: 1rem;
   margin-bottom: 1.5rem;
   margin-right: 2em;
-  width: calc((100% - 2 * 2em) / 3);
+  width: calc((100% - 2 * 53px) / 3);
+  height: 8.5rem;
   border: 0.5px rgba(0,0,0,0.3) solid;
   border-radius: 10px;
   background-color: #E1E1E1;
@@ -36,6 +37,7 @@ i.icon.fa.fa-cog.fa-fw {
 }
 
 #page.drawers {
+  position: initial;
   margin-top: 45px;
   padding: 0;
   height: inherit;
@@ -43,6 +45,7 @@ i.icon.fa.fa-cog.fa-fw {
 
 .my-page-wrapper {
   display: flex;
+  height: inherit;
 }
 
 .primary-navigation {
@@ -72,8 +75,9 @@ i.icon.fa.fa-cog.fa-fw {
   background-color: #DFE6E9;
   margin: 0;
   margin-left: 240px;
-  padding: 0;
+  padding: 15px 15px 0 15px;
   width: calc(100% - 240px);
+  height: inherit;
   border-radius: 0;
 }
 
@@ -87,4 +91,28 @@ body.limitedwidth #page.drawers .main-inner {
 
 .primary-navigation .navigation .nav-link {
   color: white;
+}
+#page-wrapper #page {
+  display: block;
+  height: 100%;
+}
+
+.drawer-toggles .drawer-toggler {
+  top: calc(45px + 3rem);
+}
+
+#page-header {
+  padding-bottom: 50px;
+}
+
+.secondary-navigation {
+  padding-bottom: 0;
+}
+
+.course-content:has(~ .all-courses) {
+  display: none;
+}
+
+#page.drawers div[role="main"] {
+  padding: 22px 61px 15px 47px;
 }
