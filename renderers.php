@@ -111,40 +111,16 @@ class theme_max_core_course_renderer extends core_course_renderer {
 
     public function get_html($CFG)
     {
-        $chelper = new coursecat_helper();
-        $chelper->set_show_courses(self::COURSECAT_SHOW_COURSES_EXPANDED)->
-        set_courses_display_options(array(
-            'recursive' => true,
-            'limit' => $CFG->frontpagecourselimit,
-            'viewmoreurl' => new moodle_url('/course/index.php'),
-            'viewmoretext' => new lang_string('fulllistofcourses')));
-        $chelper->set_attributes(array('class' => 'frontpage-course-list-all'));
+        $group = get_user_preferences('block_myoverview_user_grouping_preference');
+        $sort = get_user_preferences('block_myoverview_user_sort_preference');
+        $view = get_user_preferences('block_myoverview_user_view_preference');
+        $paging = get_user_preferences('block_myoverview_user_paging_preference');
+        $customfieldvalue = get_user_preferences('block_myoverview_user_grouping_customfieldvalue_preference');
 
-        $courses = core_course_category::top()->get_courses($chelper->get_courses_display_options());
-
-        $text = '';
+        $renderable = new \block_myoverview\output\main($group, $sort, $view, $paging, $customfieldvalue);
+        $text = $this->render($renderable);
 
         //#0A4259
-
-        $text .= html_writer::tag('h2', 'Все курсы', ['class' => 'all-courses']);
-
-        $text .= html_writer::start_tag('div', ['class' => 'mine-wrapper']);
-
-        foreach ($courses as $course) {
-            $text .= html_writer::start_tag('div', ['class' => 'mine']);
-
-            $coursename = $this->course_name($chelper, $course).$this->course_enrolment_icons($course);
-            $text .= html_writer::tag('div', $coursename, array('class' => 'info'));
-
-            $contacts = $this->coursecat_coursebox_content_with_div($chelper, $course);
-
-            $text .= html_writer::tag('div', $contacts, array('class' => 'content'));
-
-            $text .= html_writer::end_tag('div');
-        }
-
-        $text .= html_writer::end_tag('div');
-
         return $text;
     }
 

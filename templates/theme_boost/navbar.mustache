@@ -62,14 +62,14 @@
         <span class="sr-only">{{#str}}sidepanel, core{{/str}}</span>
     </button>
 
-    <a href="{{{ config.homeurl }}}" class="navbar-brand d-none d-md-flex align-items-center m-0 mr-4 p-0 aabtn">
-
+    <a href="{{{ config.homeurl }}}" class="navbar-brand d-none d-md-flex align-items-center mr-4 aabtn">
         {{# output.should_display_navbar_logo }}
             <img src="{{output.get_compact_logo_url}}" class="logo mr-1" alt="{{sitename}}">
         {{/ output.should_display_navbar_logo }}
         {{^ output.should_display_navbar_logo }}
             {{{ sitename }}}
         {{/ output.should_display_navbar_logo }}
+
     </a>
 
     <ul class="navbar-nav d-none d-md-flex my-1 px-1">
